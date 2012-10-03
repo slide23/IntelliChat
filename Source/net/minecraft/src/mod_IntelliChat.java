@@ -342,15 +342,16 @@ public class mod_IntelliChat extends BaseMod
             		y = -scaledSize.getScaledHeight() + 50;
 
                 // Draw ? button
+            	int x1 = offset;
             	int textWidth = this.mc.fontRenderer.getStringWidth("?");
-            	Gui.drawRect(offset, y, offset + 1 + textWidth + 1, y + this.mc.fontRenderer.FONT_HEIGHT, backgroundColor / 2 << 24);
+            	int x2 = x1 + 1 + textWidth + 1;
+            	Gui.drawRect(x1, y, x2, y + this.mc.fontRenderer.FONT_HEIGHT, backgroundColor / 2 << 24);
                 GL11.glEnable(GL11.GL_BLEND);
             	this.mc.fontRenderer.drawStringWithShadow("?", offset + 1, y + 1, 0xFFFFFF + (backgroundColor << 24));
 
             	if (mod_IntelliChat.getInstance().getSettings().isEnabled())
             	{
 	                // Draw Tabs
-	            	offset += offset + 1 + textWidth + 1;
 	            	for (ChatTab tab : tabConfig.getTabs())
 	            	{
 	            		String tabText = tab.getTitle();
@@ -358,7 +359,9 @@ public class mod_IntelliChat extends BaseMod
 	            			tabText += " \u00D7";
 	
 	            		textWidth = this.mc.fontRenderer.getStringWidth(tabText);
-	            		Gui.drawRect(offset, y, offset + 3 + textWidth + 3, y + this.mc.fontRenderer.FONT_HEIGHT, backgroundColor / 2 << 24);
+		            	x1 = x2 + 3;
+		            	x2 = x1 + 3 + textWidth + 3;
+	            		Gui.drawRect(x1, y, x2, y + this.mc.fontRenderer.FONT_HEIGHT, backgroundColor / 2 << 24);
 	                    GL11.glEnable(GL11.GL_BLEND);
 	
 	                    int tabColor = 0x666666;
@@ -367,9 +370,7 @@ public class mod_IntelliChat extends BaseMod
 	                    else if (tab.hasActivity())
 	                    	tabColor = 0x00CC00;
 	
-	                	this.mc.fontRenderer.drawStringWithShadow(tabText, offset + 3, y + 1, tabColor + (backgroundColor << 24));
-	
-	                	offset += this.mc.fontRenderer.getStringWidth(tabText) + 3 + 3 + 3;
+	                	this.mc.fontRenderer.drawStringWithShadow(tabText, x1 + 3, y + 1, tabColor + (backgroundColor << 24));
 	            	}
             	}
             }
@@ -561,13 +562,13 @@ public class mod_IntelliChat extends BaseMod
         {
             ScaledResolution scaledSize = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
             int scaleFactor = scaledSize.getScaleFactor();
-            int scaledX = clickX / scaleFactor - 3;
+            int scaledX = clickX / scaleFactor;
             int scaledY = clickY / scaleFactor - 40;
             boolean showGui = mc.ingameGUI.getChatGUI().func_73760_d();
 
         	int offset = 3;
 
-    		int x1 = offset - 2;
+    		int x1 = offset;
     		int x2 = offset + 1 + this.mc.fontRenderer.getStringWidth("?") + 1;
 
             byte lineCountDisplay = chatHeightCurrent;
@@ -602,7 +603,7 @@ public class mod_IntelliChat extends BaseMod
 	
 	        		if (x1 < scaledX && scaledX < x2 && y < scaledY && scaledY < y + this.mc.fontRenderer.FONT_HEIGHT)
 	        		{
-	        			if (tab.getProfile().getCloseable() && (x2 - this.mc.fontRenderer.getStringWidth(" \u00D7") - 6) < scaledX && scaledX < x2)
+	        			if (tab.getProfile().getCloseable() && (x2 - this.mc.fontRenderer.getStringWidth(" \u00D7") - 3) < scaledX && scaledX < x2)
 	        			{
 	        				tabIterator.remove();
 	        				historyWrapped.remove(tabIndex);
