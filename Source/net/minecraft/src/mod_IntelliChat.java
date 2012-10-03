@@ -40,6 +40,8 @@ import com.google.gson.GsonBuilder;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 public class mod_IntelliChat extends BaseMod
@@ -53,6 +55,8 @@ public class mod_IntelliChat extends BaseMod
     private byte chatHeightCurrent;
     private int chatWidthCurrent;
     private int scrollOffset = 0;
+
+    private KeyBinding keyBindingTab = new KeyBinding("tab_switch", Keyboard.KEY_TAB);
 
     public mod_IntelliChat()
     {
@@ -84,6 +88,7 @@ public class mod_IntelliChat extends BaseMod
 		ModLoader.addLocalization("ic.menu.retunToChat", "Return to Chat");
 		
 		// Register key binding for switching tabs
+		ModLoader.registerKey(this, this.keyBindingTab, false);
 	}
 
 	public void unload()
@@ -99,6 +104,36 @@ public class mod_IntelliChat extends BaseMod
 	public static mod_IntelliChat getInstance()
 	{
 		return instance;
+	}
+
+	@Override
+	public void keyboardEvent(KeyBinding keyBinding)
+	{
+		if (keyBinding == this.keyBindingTab && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+		{
+			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+				this.prevTab();
+			else
+				this.nextTab();
+		}
+	}
+
+	public void nextTab()
+	{
+		getActiveChatTab().clearActivity();
+		this.tabActive++;
+
+		if (this.tabActive >= this.tabConfig.getTabs().size())
+			this.tabActive = 0;
+	}
+
+	public void prevTab()
+	{
+		getActiveChatTab().clearActivity();
+		this.tabActive--;
+
+		if (this.tabActive < 0)
+			this.tabActive = this.tabConfig.getTabs().size() - 1;
 	}
 
 	public Settings getSettings() { return settings; }
@@ -552,6 +587,8 @@ public class mod_IntelliChat extends BaseMod
 	            ListIterator tabIterator = tabConfig.getTabs().listIterator();
 	        	while (tabIterator.hasNext())
 	        	{
+	            	offset = x2 + 3;
+
 	        		int tabIndex = tabIterator.nextIndex();
 	        		ChatTab tab = (ChatTab) tabIterator.next();
 	
@@ -562,7 +599,6 @@ public class mod_IntelliChat extends BaseMod
 	        		int textWidth = this.mc.fontRenderer.getStringWidth(tabText);
 	        		x1 = offset;
 	        		x2 = offset + 3 + textWidth + 3;
-	
 	
 	        		if (x1 < scaledX && scaledX < x2 && y < scaledY && scaledY < y + this.mc.fontRenderer.FONT_HEIGHT)
 	        		{
@@ -579,8 +615,6 @@ public class mod_IntelliChat extends BaseMod
 	        				this.tabActive = tabConfig.getTabs().indexOf(tab);
 	        			}
 	        		}
-	
-	            	offset = x2 + 3;
 	        	}
 	
 	            int var7 = Math.min(20, historyWrapped.get(tabActive).size());
