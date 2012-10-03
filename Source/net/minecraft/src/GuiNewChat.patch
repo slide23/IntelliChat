@@ -1,0 +1,39 @@
+--- ../../../../../IntelliChat/src clean +ml/minecraft/net/minecraft/src/GuiNewChat.java	2012-09-19 01:38:06.521055000 -0500
++++ ../../../../../IntelliChat/src/minecraft/net/minecraft/src/GuiNewChat.java	2012-10-03 00:58:59.966852817 -0500
+@@ -24,6 +24,9 @@
+ 
+     public void func_73762_a(int par1)
+     {
++        if (mod_IntelliChat.getInstance().displayChat(par1))
++            return;
++        
+         if (this.mc.gameSettings.chatVisibility != 2)
+         {
+             byte var2 = 10;
+@@ -171,6 +174,8 @@
+         {
+             this.ChatLines.remove(this.ChatLines.size() - 1);
+         }
++
++           mod_IntelliChat.getInstance().printChatMessage(par1Str);
+     }
+ 
+     public List func_73756_b()
+@@ -209,8 +214,17 @@
+         }
+     }
+ 
++    public int getScrollOffset()
++    {
++        return this.field_73768_d;
++    }
++
+     public ChatClickData func_73766_a(int par1, int par2)
+     {
++        ChatClickData mod_ICClickData = mod_IntelliChat.getInstance().doClick(par1, par2);
++        if (mod_IntelliChat.getInstance().getSettings().isEnabled())
++            return mod_ICClickData;
++
+         if (!this.func_73760_d())
+         {
+             return null;
