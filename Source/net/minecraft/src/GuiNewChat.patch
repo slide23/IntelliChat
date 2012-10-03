@@ -1,5 +1,5 @@
 --- ../../../../../IntelliChat/src clean +ml/minecraft/net/minecraft/src/GuiNewChat.java	2012-09-19 01:38:06.521055000 -0500
-+++ ../../../../../IntelliChat/src/minecraft/net/minecraft/src/GuiNewChat.java	2012-10-03 00:58:59.966852817 -0500
++++ ../../../../../IntelliChat/src/minecraft/net/minecraft/src/GuiNewChat.java	2012-10-03 12:19:06.916188392 -0500
 @@ -24,6 +24,9 @@
  
      public void func_73762_a(int par1)
@@ -19,7 +19,16 @@
      }
  
      public List func_73756_b()
-@@ -209,8 +214,17 @@
+@@ -194,6 +199,8 @@
+ 
+     public void func_73758_b(int par1)
+     {
++    	mod_IntelliChat.getInstance().doScroll(par1);
++
+         this.field_73768_d += par1;
+         int var2 = this.ChatLines.size();
+ 
+@@ -209,8 +216,17 @@
          }
      }
  

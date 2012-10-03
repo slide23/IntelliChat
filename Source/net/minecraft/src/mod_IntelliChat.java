@@ -52,7 +52,7 @@ public class mod_IntelliChat extends BaseMod
     private List<List<ChatLine>> historyWrapped = new ArrayList<List<ChatLine>>();
     private byte chatHeightCurrent;
     private int chatWidthCurrent;
-    private byte scrollOffset = 0;
+    private int scrollOffset = 0;
 
     public mod_IntelliChat()
     {
@@ -249,6 +249,22 @@ public class mod_IntelliChat extends BaseMod
     public ChatTab getActiveChatTab()
     {
     	return tabConfig.getTabs().get(tabActive);
+    }
+
+    public void doScroll(int par1)
+    {
+        this.scrollOffset += par1;
+        int bufferSize = this.historyWrapped.get(this.tabActive).size();
+
+        if (this.scrollOffset > bufferSize - 20)
+        {
+            this.scrollOffset = bufferSize - 20;
+        }
+
+        if (this.scrollOffset <= 0)
+        {
+            this.scrollOffset = 0;
+        }
     }
 
     public Boolean displayChat(int par1)
