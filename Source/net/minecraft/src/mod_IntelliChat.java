@@ -256,9 +256,9 @@ public class mod_IntelliChat extends BaseMod
         this.scrollOffset += par1;
         int bufferSize = this.historyWrapped.get(this.tabActive).size();
 
-        if (this.scrollOffset > bufferSize - 20)
+        if (this.scrollOffset > bufferSize - chatHeightCurrent)
         {
-            this.scrollOffset = bufferSize - 20;
+            this.scrollOffset = bufferSize - chatHeightCurrent;
         }
 
         if (this.scrollOffset <= 0)
