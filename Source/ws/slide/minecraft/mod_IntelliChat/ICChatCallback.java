@@ -10,6 +10,9 @@ public class ICChatCallback implements ChatCallback
 	@Override
 	public Boolean execute(StringBuilder line)
 	{
+		if (line.charAt(0) == '/')
+			return true;
+
         ChatTab tab = mod_IntelliChat.getInstance().getActiveChatTab();
         if (tab != null && tab.getProfile() != null && tab.getProfile().getFilters() != null)
         {
