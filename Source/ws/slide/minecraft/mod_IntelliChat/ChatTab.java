@@ -18,7 +18,6 @@ public class ChatTab
 	private String title;
 	private List<String> variableNames = new ArrayList<String>();
 	private Map<String, String> variables = new HashMap<String, String>();
-	private List<String> variableValues = new ArrayList<String>();
 	private List<ChatLine> history = new ArrayList<ChatLine>();
 	private int historySize = 200;
 	private ChatTabProfile profile;
@@ -82,6 +81,7 @@ public class ChatTab
 
 	public String getName() { return this.name; }
 	public String getTitle() { return this.title; }
+	public Map<String, String> getVariables() { return this.variables; }
 	public List<ChatLine> getHistory() { return this.history; }
 	public ChatTabProfile getProfile() { return this.profile; }
 	public Boolean hasActivity() { return this.activity; }

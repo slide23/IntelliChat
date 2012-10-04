@@ -29,4 +29,10 @@ public class CommandUnIgnore extends CommandBase
 			var1.sendChatToPlayer("\"" + var2[0] + "\" not in ignore list.");
 		}
 	}
+
+	@Override
+	public String getCommandUsage(ICommandSender par1iCommandSender)
+	{
+		return "Usage: \"/unignore <player>\"";
+	}
 }

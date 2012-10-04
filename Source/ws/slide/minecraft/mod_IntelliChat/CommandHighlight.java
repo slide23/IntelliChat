@@ -39,15 +39,26 @@ public class CommandHighlight extends CommandBase
 					var1.sendChatToPlayer("Removed \"" + var2[1] + "\" from highlight list.");
 				}
 				else
-				{
 					var1.sendChatToPlayer("\"" + var2[1] + "\" not in highlight list.");
-				}
 			}
 			else
 			{
-				
+				if (highlights.contains(var2[0]))
+					var1.sendChatToPlayer("\"" + var2[0] + "\" already in highlight list.");
+				else if (var2[1].length() == 1 && "0123456789abcdef".indexOf(var2[1].toLowerCase().charAt(0)) != -1)
+				{
+					highlights.add(new SettingsHighlight(var2[0], Byte.parseByte(var2[1]), false));
+					var1.sendChatToPlayer("Added \"" + var2[0] + "\" to highlight list.");
+				}
 			}
 		}
+		else
+			var1.sendChatToPlayer(getCommandUsage(var1));
+	}
 
+	@Override
+	public String getCommandUsage(ICommandSender par1iCommandSender)
+	{
+		return "Usage: \"/highlight [-r] <player> [color]\"";
 	}
 }

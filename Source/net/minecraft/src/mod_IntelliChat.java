@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Properties;
+import java.util.regex.Matcher;
 
 import ws.slide.minecraft.mod_IntelliChat.GuiSettings;
 import ws.slide.minecraft.mod_IntelliChat.ICChatCallback;
@@ -514,6 +516,24 @@ public class mod_IntelliChat extends BaseMod
         		{
         			tab = tabConfig.getTabs().get(tabConfig.getTabs().indexOf(tab));
             		tab.updateVariables(filter.getVariables(message));
+
+            		if (filter.getHighlightVariableName() != null && tab.getVariables().containsKey(filter.getHighlightVariableName()))
+            		{
+            			String varValueOriginal = tab.getVariables().get(filter.getHighlightVariableName());
+            			String varValueHighlighted = varValueOriginal;
+            			for (SettingsHighlight highlight : this.settings.getHighlights())
+            			{
+            				String highlightText = tab.parse(highlight.getText());
+            				String highlightedText = "§" + Integer.toHexString(highlight.getColor().intValue()) + Matcher.quoteReplacement(highlightText) + "§r";
+            				varValueHighlighted = varValueHighlighted.replaceAll(highlightText, highlightedText);
+            			}
+
+            			if (!varValueOriginal.equals(varValueHighlighted))
+            				Toolkit.getDefaultToolkit().beep();
+
+            			tab.getVariables().put(filter.getHighlightVariableName(), varValueHighlighted);
+            		}
+
                 	tab.addLine((filter.getOutput() == null) ? (message) : (filter.getOutput()));
         		}
         		else
